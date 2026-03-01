@@ -1,0 +1,34 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout the source code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Angular application
+        run: npm run build -- --base-href=/wave-rank/
+
+      - name: Deploy to GitHub Pages
+        uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.2.0
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          angular_dist_build_folder: dist/<your-project-name> 
+          deploy_branch: gh-pages
