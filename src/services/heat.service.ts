@@ -46,8 +46,9 @@ export class HeatService {
     return data
       ? JSON.parse(data)
       : [
-          { id: 1, name: 'Gabriel Medina', scores: [] },
+          { id: 1, name: 'Dowglas Barros', scores: [] },
           { id: 2, name: 'Italo Ferreira', scores: [] },
+          { id: 3, name: 'Gabriel Medina', scores: [] },
         ];
   }
 

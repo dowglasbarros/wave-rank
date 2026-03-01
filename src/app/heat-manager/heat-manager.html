@@ -1,148 +1,193 @@
-<mat-card class="timer-card" [class.low-time]="heatService.timeLeft() < 300">
-  <mat-card-content>
-    <div class="timer-section">
-      <mat-icon>timer</mat-icon>
+<div class="brand-zone">
+  <div class="speed-label">OFFICIAL SCORING SYSTEM</div>
+</div>
 
-      @if (!isEditingTime()) {
-        <span class="clock" (click)="startEdit()">
-          {{ heatService.formattedTime() }}
-        </span>
-      } @else {
-        <div class="edit-group">
-          <input
-            matInput
-            type="number"
-            #timeInput
-            [value]="math.floor(heatService.timeLeft() / 60)"
-            (keyup.enter)="saveTime(timeInput.value)"
-            class="edit-input"
-          />
-          <span>min</span>
-          <button mat-icon-button (click)="saveTime(timeInput.value)">
-            <mat-icon>check</mat-icon>
-          </button>
-        </div>
-      }
-    </div>
+<div class="brand-container">
+  <div class="glass-header">
+    <span class="live-indicator"></span>
+    <h1 class="modern-title"><span class="accent">WAVE</span>RANK</h1>
+  </div>
+</div>
 
-    <div class="timer-controls">
-      <button
-        mat-mini-fab
-        [color]="heatService.isTimerRunning() ? 'warn' : 'primary'"
-        (click)="heatService.toggleTimer()"
-        [disabled]="isEditingTime()"
-      >
-        <mat-icon>{{ heatService.isTimerRunning() ? 'pause' : 'play_arrow' }}</mat-icon>
-      </button>
-      <button mat-icon-button (click)="heatService.resetTimer()">
-        <mat-icon>refresh</mat-icon>
-      </button>
-    </div>
-  </mat-card-content>
-</mat-card>
+<div class="brand-zone">
+  <div class="speed-bar">
+    <div class="bar-segment"></div>
+    <div class="bar-segment"></div>
+    <div class="bar-segment-active"></div>
+  </div>
+</div>
 
-<div class="heat-container">
-  <mat-card class="admin-panel">
+<div class="main-content">
+  <mat-card class="timer-card" [class.low-time]="heatService.timeLeft() < 300">
     <mat-card-content>
-      <mat-form-field appearance="outline">
-        <mat-label>Novo Atleta</mat-label>
+      <div class="timer-section">
+        <mat-icon>timer</mat-icon>
 
-        <input
-          matInput
-          #newName
-          (keyup.enter)="addAndClear(newName)"
-          placeholder="Nome do surfista"
-        />
-      </mat-form-field>
-      <button mat-flat-button color="accent" (click)="addAndClear(newName)">
-        Adicionar à Bateria
-      </button>
-      <button mat-stroked-button color="warn" (click)="handleReset()">Zerar Bateria</button>
+        @if (!isEditingTime()) {
+          <span class="clock" (click)="startEdit()">
+            {{ heatService.formattedTime() }}
+          </span>
+        } @else {
+          <div class="edit-group">
+            <input
+              matInput
+              type="number"
+              #timeInput
+              [value]="math.floor(heatService.timeLeft() / 60)"
+              (keyup.enter)="saveTime(timeInput.value)"
+              class="edit-input"
+            />
+            <span>min</span>
+            <button mat-icon-button (click)="saveTime(timeInput.value)">
+              <mat-icon>check</mat-icon>
+            </button>
+          </div>
+        }
+      </div>
+
+      <div class="timer-controls">
+        <button
+          mat-mini-fab
+          [color]="heatService.isTimerRunning() ? 'warn' : 'primary'"
+          (click)="heatService.toggleTimer()"
+          [disabled]="isEditingTime()"
+        >
+          <mat-icon>{{ heatService.isTimerRunning() ? 'pause' : 'play_arrow' }}</mat-icon>
+        </button>
+        <button mat-icon-button (click)="heatService.resetTimer()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
     </mat-card-content>
   </mat-card>
 
-  <div class="header-info">
-    <p>
-      Prioridade Atual:
-      <strong>{{ athletes().find(a => a.id === priorityAthleteId())?.name || 'Ninguém' }}</strong>
-    </p>
-  </div>
+  <div class="heat-container">
+    <mat-card class="admin-panel">
+      <mat-card-content>
+        <mat-form-field appearance="outline">
+          <mat-label>Novo Atleta</mat-label>
 
-  <div class="athletes-grid">
-    @for (athlete of heatService.rankedAthletes(); track athlete.id; let i = $index) {
-      <mat-card
-        class="athlete-card"
-        [class.leader]="i === 0 && athlete.scores.length > 0"
-        [class.has-priority]="priorityAthleteId() === athlete.id"
-      >
-        <div class="requirement-tag" [class.is-leader]="i === 0">
-          @if (i === 0) {
-            <span>1º lugar</span>
-          } @else {
-            <span
-              >PRECISA DE: <strong>{{ heatService.requirements().get(athlete.id) }}</strong></span
-            >
-          }
-        </div>
+          <input
+            matInput
+            #newName
+            (keyup.enter)="addAndClear(newName)"
+            placeholder="Nome do surfista"
+          />
+        </mat-form-field>
+        <button mat-flat-button color="accent" (click)="addAndClear(newName)">
+          Adicionar à Bateria
+        </button>
+        <button mat-stroked-button color="warn" (click)="handleReset()">Zerar Bateria</button>
+      </mat-card-content>
+    </mat-card>
 
-        <div class="rank-badge">#{{ i + 1 }}</div>
-
-        <mat-card-header>
-          <div class="header-row">
-            <mat-card-title>{{ athlete.name }}</mat-card-title>
-            <div class="actions">
-              <button mat-icon-button (click)="heatService.setPriority(athlete.id)">
-                <span class="p-icon">P</span>
-              </button>
-              <button mat-icon-button color="warn" (click)="heatService.removeAthlete(athlete.id)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
-          </div>
-        </mat-card-header>
-
-        <mat-card-content>
-          <div class="score-display">
-            <div class="total-box">
-              <span class="total-value">
-                {{ heatService.calculateTotal(athlete.scores) | number: '1.2-2' }}
-              </span>
-            </div>
-            <div class="waves-row">
-              @for (score of athlete.scores; track $index) {
-                <div class="wave-item" [class.is-best]="isTopScore(score, athlete.scores, $index)">
-                  <span class="score-value">{{ score | number: '1.1-2' }}</span>
-
-                  <button
-                    class="delete-badge"
-                    (click)="heatService.removeScore(athlete.id, $index)"
-                    title="Excluir nota {{ score | number: '1.1-2' }}"
-                    aria-label="Excluir nota"
-                  >
-                    <mat-icon>close</mat-icon>
-                  </button>
-                </div>
-              } @empty {
-                <span class="empty-history">Nenhuma onda registrada.</span>
-              }
-            </div>
-          </div>
-
-          <div class="input-area">
-            <mat-form-field appearance="outline" subscriptSizing="dynamic">
-              <input
-                matInput
-                type="number"
-                #scoreInput
-                (keyup.enter)="handleScore(athlete.id, scoreInput)"
-              />
-            </mat-form-field>
-            <button mat-flat-button color="primary" (click)="addScore(athlete.id, scoreInput)">
-              +
-            </button>
-          </div>
-        </mat-card-content>
-      </mat-card>
+    @if (athletes().length) {
+      <div class="header-info">
+        <p>
+          Prioridade Atual:
+          <strong
+            >{{ athletes().find(a => a.id === priorityAthleteId())?.name || 'Ninguém' }}</strong
+          >
+        </p>
+      </div>
     }
+
+    <div class="athletes-grid">
+      @for (athlete of heatService.rankedAthletes(); track athlete.id; let i = $index) {
+        <mat-card
+          class="athlete-card"
+          [class.leader]="i === 0 && athlete.scores.length > 0"
+          [class.has-priority]="priorityAthleteId() === athlete.id"
+        >
+          <div class="requirement-tag" [class.is-leader]="i === 0">
+            @if (i === 0) {
+              <span>1º lugar</span>
+            } @else {
+              <span
+                >PRECISA DE: <strong>{{ heatService.requirements().get(athlete.id) }}</strong></span
+              >
+            }
+          </div>
+
+          <div class="rank-badge">#{{ i + 1 }}</div>
+
+          <mat-card-header>
+            <div class="header-row">
+              <mat-card-title>{{ athlete.name }}</mat-card-title>
+              <div class="actions">
+                <button mat-icon-button (click)="heatService.setPriority(athlete.id)">
+                  <span class="p-icon">P</span>
+                </button>
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="heatService.removeAthlete(athlete.id)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="score-display">
+              <div class="total-box">
+                <span class="total-value">
+                  {{ heatService.calculateTotal(athlete.scores) | number: '1.2-2' }}
+                </span>
+              </div>
+              <div class="waves-row">
+                @for (score of athlete.scores; track $index) {
+                  <div
+                    class="wave-item"
+                    [class.is-best]="isTopScore(score, athlete.scores, $index)"
+                  >
+                    <span class="score-value">{{ score | number: '1.1-2' }}</span>
+
+                    <button
+                      class="delete-badge"
+                      (click)="heatService.removeScore(athlete.id, $index)"
+                      title="Excluir nota {{ score | number: '1.1-2' }}"
+                      aria-label="Excluir nota"
+                    >
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </div>
+                } @empty {
+                  <span class="empty-history">Nenhuma onda registrada.</span>
+                }
+              </div>
+            </div>
+
+            <div class="input-area">
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <input
+                  matInput
+                  type="number"
+                  #scoreInput
+                  (keyup.enter)="handleScore(athlete.id, scoreInput)"
+                />
+              </mat-form-field>
+              <button mat-flat-button color="primary" (click)="addScore(athlete.id, scoreInput)">
+                +
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      } @empty {
+        <div class="empty-state-container">
+          <mat-icon class="empty-icon">surfing</mat-icon>
+          <h2>A bateria está vazia</h2>
+          <p>Parece que nenhum competidor foi adicionado ainda.</p>
+        </div>
+      }
+    </div>
   </div>
 </div>
+
+<footer class="app-footer">
+  <div class="footer-content">
+    <p>Sistema de Julgamento de Surf &copy; 2026</p>
+    <span class="signature">Feito por <strong>Dowglas Barros</strong></span>
+  </div>
+</footer>

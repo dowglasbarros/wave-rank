@@ -1,3 +1,9 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .athlete-card {
   transition:
     transform 0.2s ease,
@@ -356,5 +362,177 @@
   .mat-mdc-snack-bar-action {
     color: #ffeb3b !important;
     font-weight: bold;
+  }
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.app-footer {
+  flex-shrink: 0;
+  background-color: #222;
+  color: #aaa;
+  padding: 15px 0;
+  border-top: 1px solid #444;
+  text-align: center;
+
+  .signature {
+    font-size: 0.85rem;
+    strong {
+      color: #ff9800;
+    }
+  }
+}
+
+.app-footer {
+  margin-top: 40px;
+  padding: 20px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: #f8f9fa;
+  color: #666;
+  width: 100%;
+
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+
+    p {
+      margin: 0;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+    }
+
+    .signature {
+      font-size: 0.9rem;
+
+      strong {
+        color: #3f51b5;
+        font-weight: 600;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: #ff4081;
+          cursor: default;
+        }
+      }
+    }
+  }
+}
+
+.brand-container {
+  display: flex;
+  justify-content: center;
+  padding: 5px 0 5px;
+}
+
+.glass-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 25px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 50px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+
+  .live-indicator {
+    width: 10px;
+    height: 10px;
+    background-color: #ff1744;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+  }
+
+  .modern-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
+    font-style: italic;
+    margin: 0;
+    color: #1a1a1a;
+    letter-spacing: -1px;
+    line-height: 1;
+
+    .accent {
+      color: transparent;
+      -webkit-text-stroke: 1.5px #1a1a1a;
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 23, 68, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 23, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 23, 68, 0);
+  }
+}
+
+.brand-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px 0;
+  background-color: transparent;
+
+  .speed-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 5px;
+    color: #3f51b5;
+    margin-bottom: -10px;
+    opacity: 0.8;
+  }
+
+  .speed-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 4rem;
+    font-weight: 700;
+    font-style: italic;
+    margin: 0;
+    color: #1a1a1a;
+    letter-spacing: -1px;
+    line-height: 1;
+
+    .accent {
+      color: transparent;
+      -webkit-text-stroke: 1.5px #1a1a1a;
+    }
+  }
+
+  .speed-bar {
+    display: flex;
+    gap: 4px;
+    margin-top: 5px;
+
+    div {
+      height: 4px;
+      border-radius: 2px;
+      background: #ddd;
+    }
+
+    .bar-segment {
+      width: 20px;
+    }
+    .bar-segment-active {
+      width: 60px;
+      background: linear-gradient(90deg, #3f51b5, #00bcd4);
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .speed-title {
+    font-size: 2.8rem;
   }
 }
