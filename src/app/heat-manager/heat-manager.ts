@@ -28,6 +28,8 @@ export class HeatManager {
 
   athletes = this.heatService.athletes;
   priorityAthleteId = this.heatService.priorityAthleteId;
+  isEditingTime = signal(false);
+  math = Math; // Para usar no template
 
   addAndClear(input: HTMLInputElement) {
     if (input.value) {
@@ -83,5 +85,19 @@ export class HeatManager {
       return true;
     }
     return false;
+  }
+
+  startEdit() {
+    if (!this.heatService.isTimerRunning()) {
+      this.isEditingTime.set(true);
+    }
+  }
+
+  saveTime(value: string) {
+    const mins = parseInt(value, 10);
+    if (!isNaN(mins)) {
+      this.heatService.updateTime(mins);
+    }
+    this.isEditingTime.set(false);
   }
 }

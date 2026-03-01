@@ -1,8 +1,28 @@
 <mat-card class="timer-card" [class.low-time]="heatService.timeLeft() < 300">
   <mat-card-content>
-    <div class="timer-display">
+    <div class="timer-section">
       <mat-icon>timer</mat-icon>
-      <span class="clock">{{ heatService.formattedTime() }}</span>
+
+      @if (!isEditingTime()) {
+        <span class="clock" (click)="startEdit()">
+          {{ heatService.formattedTime() }}
+        </span>
+      } @else {
+        <div class="edit-group">
+          <input
+            matInput
+            type="number"
+            #timeInput
+            [value]="math.floor(heatService.timeLeft() / 60)"
+            (keyup.enter)="saveTime(timeInput.value)"
+            class="edit-input"
+          />
+          <span>min</span>
+          <button mat-icon-button (click)="saveTime(timeInput.value)">
+            <mat-icon>check</mat-icon>
+          </button>
+        </div>
+      }
     </div>
 
     <div class="timer-controls">
@@ -10,11 +30,11 @@
         mat-mini-fab
         [color]="heatService.isTimerRunning() ? 'warn' : 'primary'"
         (click)="heatService.toggleTimer()"
+        [disabled]="isEditingTime()"
       >
         <mat-icon>{{ heatService.isTimerRunning() ? 'pause' : 'play_arrow' }}</mat-icon>
       </button>
-
-      <button mat-icon-button (click)="heatService.timeLeft.set(20 * 60)">
+      <button mat-icon-button (click)="heatService.resetTimer()">
         <mat-icon>refresh</mat-icon>
       </button>
     </div>
@@ -59,7 +79,7 @@
       >
         <div class="requirement-tag" [class.is-leader]="i === 0">
           @if (i === 0) {
-            <span>1st PLACE</span>
+            <span>1º lugar</span>
           } @else {
             <span
               >PRECISA DE: <strong>{{ heatService.requirements().get(athlete.id) }}</strong></span

@@ -147,4 +147,14 @@ export class HeatService {
     const seconds = this.timeLeft() % 60;
     return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   });
+
+  updateTime(minutes: number) {
+    const seconds = Math.max(0, minutes * 60);
+    this.timeLeft.set(seconds);
+  }
+
+  resetTimer() {
+    this.updateTime(20);
+    this.isTimerRunning.set(false);
+  }
 }
