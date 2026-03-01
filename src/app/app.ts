@@ -1,9 +1,9 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { HeatManager } from './heat-manager/heat-manager';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [HeatManager],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
