@@ -57,9 +57,7 @@
       <button mat-flat-button color="accent" (click)="addAndClear(newName)">
         Adicionar à Bateria
       </button>
-      <button mat-stroked-button color="warn" (click)="heatService.resetHeat()">
-        Zerar Bateria
-      </button>
+      <button mat-stroked-button color="warn" (click)="handleReset()">Zerar Bateria</button>
     </mat-card-content>
   </mat-card>
 

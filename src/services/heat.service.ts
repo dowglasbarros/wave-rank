@@ -6,6 +6,7 @@ import { Athlete } from '../interfaces/surfer';
 })
 export class HeatService {
   private readonly STORAGE_KEY = 'surf_heat_data';
+  private snapshotBeforeReset: Athlete[] | null = null;
 
   athletes = signal<Athlete[]>(this.loadFromStorage());
   priorityAthleteId = signal<number | null>(null);
@@ -58,8 +59,15 @@ export class HeatService {
   }
 
   resetHeat() {
-    this.athletes.set(this.loadFromStorage().map((a) => ({ ...a, scores: [] })));
-    this.priorityAthleteId.set(null);
+    this.snapshotBeforeReset = JSON.parse(JSON.stringify(this.athletes()));
+    this.athletes.update((list) => list.map((a) => ({ ...a, scores: [] })));
+  }
+
+  undoReset() {
+    if (this.snapshotBeforeReset) {
+      this.athletes.set(this.snapshotBeforeReset);
+      this.snapshotBeforeReset = null;
+    }
   }
 
   setPriority(id: number) {

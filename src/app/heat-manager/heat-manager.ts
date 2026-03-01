@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { HeatService } from '../../services/heat.service';
 import { MatIcon } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-heat-manager',
@@ -24,6 +25,7 @@ import { MatIcon } from '@angular/material/icon';
   styleUrls: ['./heat-manager.scss'],
 })
 export class HeatManager {
+  private snackBar = inject(MatSnackBar);
   protected heatService = inject(HeatService);
 
   athletes = this.heatService.athletes;
@@ -72,6 +74,25 @@ export class HeatManager {
     if (!isNaN(val) && val >= 0 && val <= 10) {
       this.heatService.addScore(id, val);
       input.value = '';
+    }
+  }
+
+  handleReset() {
+    const hasScores = this.heatService.athletes().some((a) => a.scores.length > 0);
+
+    if (hasScores) {
+      this.heatService.resetHeat();
+
+      const snack = this.snackBar.open('Bateria zerada!', 'DESFAZER', {
+        duration: 8000,
+        panelClass: ['warning-snackbar'],
+      });
+
+      snack.onAction().subscribe(() => {
+        this.heatService.undoReset();
+      });
+    } else {
+      this.heatService.resetHeat();
     }
   }
 
