@@ -75,16 +75,13 @@ export class HeatManager {
     }
   }
 
-  isTopScore(score: number, scores: number[]): boolean {
-    if (scores.length < 2) return scores.includes(score);
-    const topTwo = [...scores].sort((a, b) => b - a).slice(0, 2);
+  isTopScore(score: number, scores: number[], index: number): boolean {
+    if (scores.length < 2) return true;
 
-    const index = topTwo.indexOf(score);
-    if (index !== -1) {
-      topTwo.splice(index, 1);
-      return true;
-    }
-    return false;
+    const indexedScores = scores.map((s, i) => ({ s, i }));
+    const topTwo = indexedScores.sort((a, b) => b.s - a.s).slice(0, 2);
+
+    return topTwo.some((item) => item.i === index);
   }
 
   startEdit() {

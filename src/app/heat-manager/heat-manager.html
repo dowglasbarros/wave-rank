@@ -111,10 +111,21 @@
               </span>
             </div>
             <div class="waves-row">
-              @for (s of athlete.scores; track $index) {
-                <span class="wave-pill" [class.best]="isTopScore(s, athlete.scores)">
-                  {{ s | number: '1.1-2' }}
-                </span>
+              @for (score of athlete.scores; track $index) {
+                <div class="wave-item" [class.is-best]="isTopScore(score, athlete.scores, $index)">
+                  <span class="score-value">{{ score | number: '1.1-2' }}</span>
+
+                  <button
+                    class="delete-badge"
+                    (click)="heatService.removeScore(athlete.id, $index)"
+                    title="Excluir nota {{ score | number: '1.1-2' }}"
+                    aria-label="Excluir nota"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+              } @empty {
+                <span class="empty-history">Nenhuma onda registrada.</span>
               }
             </div>
           </div>

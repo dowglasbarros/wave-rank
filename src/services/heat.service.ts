@@ -157,4 +157,17 @@ export class HeatService {
     this.updateTime(20);
     this.isTimerRunning.set(false);
   }
+
+  removeScore(athleteId: number, scoreIndex: number) {
+    this.athletes.update((list) =>
+      list.map((a) => {
+        if (a.id === athleteId) {
+          const newScores = [...a.scores];
+          newScores.splice(scoreIndex, 1);
+          return { ...a, scores: newScores };
+        }
+        return a;
+      }),
+    );
+  }
 }
